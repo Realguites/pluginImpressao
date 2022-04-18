@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <img id="file1" src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Borboleta_transparente_REFON.JPG" alt="">
+
+    <button onclick="teste()">OLAAAA</button>
+    <script>
+        function teste() {
+            let file1 = document.getElementById('file1');
+            //var imgBase64 = file1.toDataURL("image/png");
+					var formData = new FormData();
+					file1.toBlob(function(blob) {
+						formData.append('file', blob);
+					})
+            $.ajax({
+                headers: {
+                    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+                },
+                url: 'http://127.0.0.1:5000/',
+                type: 'POST',
+                data: {
+                    imgBase64
+                },
+                processData: false,
+                contentType: false,
+                success: function (data, textStatus, xhr) {
+                    console.log(xhr)
+                }
+
+            });
+        }
+    </script>
+</body>
+
+</html>
