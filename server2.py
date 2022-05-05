@@ -1,4 +1,7 @@
 import os
+import win32print
+import json
+import win32api
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
@@ -8,6 +11,14 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route('/imprimirteste', methods=['GET'])
+#@cross_origin()
+def imprimir():
+    lista_impressoras = win32print.EnumPrinters(2)
+    print(lista_impressoras[1])
+    return json.dumps(lista_impressoras)
+
 
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()
