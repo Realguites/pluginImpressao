@@ -22,19 +22,19 @@ def getAllPrinters():
     lista_impressoras = [printer[2] for printer in win32print.EnumPrinters(2)]
     return json.dumps(lista_impressoras)
 
-@app.route('/imprimirteste', methods=['GET','POST'])
+@app.route('/imprimirteste/<string:impressora>', methods=['GET','POST'])
 @cross_origin()
-def receiveFile():
+def receiveFile(impressora):
     if request.method == 'POST':
-        if not request.form.get('printer'):
+        if not impressora:
             return Response("Impressora não informada!", status="400", mimetype='application/json')
         else:
-            if request.form.get('printer') not in getPrinters():
+            if impressora not in getPrinters():
                 return Response("Impressora não encontrada!", status="400", mimetype='application/json')
             else:
                 pdf_64 = request.form.get("pdf_64")
                 bytes = b64decode(pdf_64, validate=True)
-                callPrinterService('Microsoft Print to PDF', bytes)
+                callPrinterService(impressora, bytes)
 
 
 @app.errorhandler(HTTPException)
